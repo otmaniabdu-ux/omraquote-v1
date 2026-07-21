@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "أومرا في آي بي - عروض",
+    "subtitle": "المحسنون للسياحة"
+  },
+  "nav": {
+    "dashboard": "لوحة القيادة",
+    "devis": "عروض الأسعار",
+    "clients": "العملاء",
+    "catalogues": "القوائم",
+    "parametres": "الإعدادات",
+    "marge": "الهامش الداخلي"
+  },
+  "devis": {
+    "new": "عرض سعر جديد",
+    "edit": "تعديل عرض السعر",
+    "list": "قائمة عروض الأسعار",
+    "number": "رقم عرض السعر",
+    "status": "الحالة",
+    "total": "المجموع",
+    "actions": "إجراءات",
+    "save": "حفظ عرض السعر",
+    "create": "إنشاء عرض السعر",
+    "update": "تحديث",
+    "next": "التالي",
+    "previous": "السابق",
+    "cancel": "إلغاء",
+    "validate": "اعتماد عرض السعر",
+    "generate_pdf": "توليد PDF",
+    "view_client": "عرض العميل",
+    "view_internal": "عرض داخلي"
+  },
+  "wizard": {
+    "steps": [
+      "المسافرون",
+      "الرحلات الجوية",
+      "الإقامة",
+      "النقل / القطار",
+      "خدمات VIP",
+      "المعلومات المالية",
+      "الملخص"
+    ],
+    "passagers": {
+      "title": "المسافرون",
+      "hint": "أدخل معلومات كل مسافر.",
+      "add": "+ إضافة مسافر",
+      "remove": "حذف",
+      "full_name": "الاسم الكامل *",
+      "birth_date": "تاريخ الميلاد *",
+      "category": "الفئة",
+      "nationality": "الجنسية",
+      "passport_number": "رقم جواز السفر",
+      "passport_expiry": "تاريخ انتهاء جواز السفر",
+      "expiry_notice": "جواز السفر ينتهي خلال أقل من 6 أشهر بعد العودة",
+      "categories": {
+        "adulte": "بالغ",
+        "enfant_avec_lit": "طفل (مع سرير) 2-11 سنة",
+        "enfant_sans_lit": "طفل (بدون سرير) 2-11 سنة",
+        "bebe": "رضيع < 2 سنة"
+      }
+    },
+    "vols": {
+      "title": "معلومات الرحلة الجوية",
+      "add_segment": "+ إضافة قسم رحلة",
+      "duplicate_segment": "تكرار هذا القسم (العودة)",
+      "remove_segment": "حذف",
+      "company": "شركة الطيران *",
+      "flight_number": "رقم الرحلة",
+      "class": "الفئة",
+      "departure_airport": "مطار المغادرة",
+      "arrival_airport": "مطار الوصول",
+      "flight_date": "تاريخ الرحلة *",
+      "departure_time": "وقت المغادرة",
+      "arrival_time": "وقت الوصول",
+      "prices": {
+        "adulte": "سعر البالغ",
+        "enfant": "سعر الطفل",
+        "bebe": "سعر الرضيع"
+      },
+      "currency": "العملة",
+      "outbound": "ذهاب",
+      "return": "عودة",
+      "classes": {
+        "economique": "اقتصادي",
+        "affaires": "أعمال",
+        "premiere": "درجة أولى"
+      }
+    },
+    "hebergement": {
+      "title_makkah": "الإقامة في مكة",
+      "title_medine": "الإقامة في المدينة",
+      "add_hébergement": "+ إضافة إقامة",
+      "remove": "حذف",
+      "hotel": "الفندق *",
+      "checkin": "تاريخ الوصول *",
+      "checkout": "تاريخ المغادرة *",
+      "nuites": "ليالي (دليل)",
+      "room_type": "نوع الغرفة",
+      "meal_plan": "خطة الوجبة",
+      "view": "الإطلالة (اختياري)",
+      "taxes_included": "الضرائب شاملة",
+      "remarques": "ملاحظات",
+      "room_types": {
+        "single": "فردي",
+        "double": "زوجي",
+        "triple": "ثلاثي",
+        "quadruple": "رباعي"
+      },
+      "meal_plans": {
+        "petit_dejeuner": "وجبة إفطار",
+        "demi_pension": "نصف نظام غذائي",
+        "pension_complete": "نظام غذائي كامل"
+      },
+      "views": {
+        "kaaba": "إطلالة على الكعبة",
+        "haram": "إطلالة على الحرم",
+        "city": "إطلالة على المدينة"
+      }
+    },
+    "transferts": {
+      "title": "النقل / القطار",
+      "add_transfer": "+ إضافة نقل",
+      "remove": "حذف",
+      "required_transfers": "النقل الإلزامي",
+      "optional_transfers": "النقل الاختياري",
+      "train_section": "قطار الحرمين",
+      "add_train": "+ إضافة القطار",
+      "type_vehicule": "نوع السيارة *",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "nb_vehicles": "عدد السيارات *",
+      "unit_price": "السعر الوحدة *",
+      "train_trajet": "المسار",
+      "train_classe": "الفئة",
+      "train_nb_passagers": "عدد المسافرين *",
+      "train_price_per_passenger": "السعر للمسافر *",
+      "trajets": {
+        "aeroport_makkah_hotel": "مطار جدة -> فندق مكة",
+        "makkah_hotel_aeroport": "فندق مكة -> مطار جدة",
+        "aeroport_medine_hotel": "مطار المدينة -> فندق المدينة",
+        "medine_hotel_aeroport": "فندق المدينة -> مطار المدينة"
+      },
+      "vehicules": {
+        "GMC_Yukon": "جيم سي Yukon",
+        "Mercedes_Classe_E": "مرسيدس كلاس إيه",
+        "Bus_VIP_prive": "حافلة VIP خاصة"
+      }
+    },
+    "prestations_vip": {
+      "title": "خدمات VIP",
+      "add_prestation": "+ إضافة خدمة",
+      "remove": "حذف",
+      "type": "نوع الخدمة *",
+      "description": "الوصف",
+      "quantity": "الكمية *",
+      "unit_price": "السعر الوحدة *",
+      "currency": "العملة",
+      "other": "أخرى (وصف مخصص)",
+      "types": {
+        "ziyarat": "زيارة خاصة",
+        "lounge": "صالة VIP",
+        "fast_track": "مسار سريع",
+        "bagages": "أمتارة إضافية",
+        "zamzam": "ماء زمزم",
+        "autre": "أخرى"
+      }
+    },
+    "financier": {
+      "title": "المعلومات المالية",
+      "taux_sar": "سعر SAR -> DZD *",
+      "taux_usd": "سعر USD -> DZD *",
+      "taux_eur": "سعر EUR -> DZD *",
+      "marge_type": "نوع الهامش *",
+      "marge_valeur": "قيمة الهامش *",
+      "remise": "الخصم (عشري)",
+      "notes_internes": "ملاحظات داخلية",
+      "margin_types": {
+        "pourcentage": "نسبة مئوية (%)",
+        "montant_fixe": "مبلغ ثابت"
+      }
+    },
+    "recapitulatif": {
+      "title": "ملخص عرض السعر",
+      "passagers": "المسافرون",
+      "vols": "الرحلات الجوية",
+      "hebergements": "الإقامات",
+      "transferts": "النقل",
+      "prestations": "خدمات VIP"
+    }
+  },
+  "marge": {
+    "title": "لوحة الهامش الداخلي",
+    "internal_only": "للاستخدام الداخلي فقط - لا تصدر إلى العميل",
+    "period": "الفترة",
+    "presets": "إعدادات مسبقة",
+    "preset_month": "هذا الشهر",
+    "preset_quarter": "هذا الربع",
+    "preset_year": "هذه السنة",
+    "preset_custom": "مخصص",
+    "refresh": "تحديث",
+    "loading": "جار تحميل البيانات...",
+    "total_devis": "عدد عروض الأسعار",
+    "cost_total": "صافي التكلفة الإجمالي",
+    "margin_total": "إجمالي الهامش",
+    "revenue": "إيرادات المبيعات",
+    "best_devis": "أفضل عرض سعر (أعلى هامش)",
+    "margin_evolution": "تطور الهوامش شهرياً",
+    "top_clients": "أفضل العملاء (حسب الهامش)",
+    "client": "العميل",
+    "total_margin": "إجمالي الهامش",
+    "devis_count": "عدد عروض الأسعار",
+    "monthly_detail": "التفاصيل الشهرية",
+    "month": "الشهر",
+    "devis_nb": "عدد العروض",
+    "net_cost": "صافي التكلفة",
+    "margin": "الهامش",
+    "ca": "إيرادات المبيعات",
+    "select_period": "يرجى تحديد فترة."
+  },
+  "alert": {
+    "passeport": "تنبيه جواز السفر",
+    "passeport_text": "جواز السفر ينتهي خلال أقل من 6 أشهر بعد العودة"
+  },
+  "common": {
+    "loading": "جار التحميل...",
+    "empty": "لا توجد نتائج",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "search": "بحث...",
+    "cancel": "إلغاء",
+    "confirm_delete": "تأكيد الحذف؟",
+    "back": "رجوع",
+    "select_all": "تحديد الكل",
+    "deselect_all": "إلغاء تحديد الكل"
+  }
+}

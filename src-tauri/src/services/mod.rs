@@ -1,0 +1,10 @@
+pub mod conversion_devises;
+pub mod calcul_prix;
+pub mod calcul_nuitees;
+pub mod alerte_passeport;
+pub mod numerotation;
+pub mod validation;
+#[cfg(feature = "pdf-generation")]
+pub mod generation_pdf;
+pub mod agregats_marge;
+pub mod fonts;

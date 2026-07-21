@@ -1,0 +1,246 @@
+{
+  "app": {
+    "title": "OmraVIP Quotes",
+    "subtitle": "El Mouhssinouen Tours"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "devis": "Devis",
+    "clients": "Clients",
+    "catalogues": "Catalogues",
+    "parametres": "Paramètres",
+    "marge": "Marge interne"
+  },
+  "devis": {
+    "new": "Nouveau devis",
+    "edit": "Modifier le devis",
+    "list": "Liste des devis",
+    "number": "N° devis",
+    "status": "Statut",
+    "total": "Total",
+    "actions": "Actions",
+    "save": "Sauvegarder le devis",
+    "create": "Créer le devis",
+    "update": "Mettre à jour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "cancel": "Annuler",
+    "validate": "Valider le devis",
+    "generate_pdf": "Générer PDF",
+    "view_client": "Vue client",
+    "view_internal": "Vue interne"
+  },
+  "wizard": {
+    "steps": [
+      "Passagers",
+      "Vols",
+      "Hébergement",
+      "Transferts / Train",
+      "Prestations VIP",
+      "Financier",
+      "Récapitulatif"
+    ],
+    "passagers": {
+      "title": "Voyageurs",
+      "hint": "Saisissez les informations de chaque passager.",
+      "add": "+ Ajouter un passager",
+      "remove": "Supprimer",
+      "full_name": "Nom complet *",
+      "birth_date": "Date de naissance *",
+      "category": "Catégorie",
+      "nationality": "Nationalité",
+      "passport_number": "N° passeport",
+      "passport_expiry": "Date d'expiration passeport",
+      "expiry_notice": "Passeport expirant dans moins de 6 mois après le retour",
+      "categories": {
+        "adulte": "Adulte",
+        "enfant_avec_lit": "Enfant (avec lit) 2-11 ans",
+        "enfant_sans_lit": "Enfant (sans lit) 2-11 ans",
+        "bebe": "Bébé < 2 ans"
+      }
+    },
+    "vols": {
+      "title": "Informations sur le vol",
+      "add_segment": "+ Ajouter un segment",
+      "duplicate_segment": "Dupliquer ce segment (retour)",
+      "remove_segment": "Supprimer",
+      "company": "Compagnie aérienne *",
+      "flight_number": "N° vol",
+      "class": "Classe",
+      "departure_airport": "Aéroport de départ",
+      "arrival_airport": "Aéroport d'arrivée",
+      "flight_date": "Date du vol *",
+      "departure_time": "Heure de départ",
+      "arrival_time": "Heure d'arrivée",
+      "prices": {
+        "adulte": "Prix adulte",
+        "enfant": "Prix enfant",
+        "bebe": "Prix bébé"
+      },
+      "currency": "Devise",
+      "outbound": "Aller",
+      "return": "Retour",
+      "classes": {
+        "economique": "Économique",
+        "affaires": "Affaires",
+        "premiere": "Première classe"
+      }
+    },
+    "hebergement": {
+      "title_makkah": "Hébergement à Makkah",
+      "title_medine": "Hébergement à Médine",
+      "add_hébergement": "+ Ajouter un hébergement",
+      "remove": "Supprimer",
+      "hotel": "Hôtel *",
+      "checkin": "Date d'arrivée *",
+      "checkout": "Date de départ *",
+      "nuites": "Nuitées (indicatif)",
+      "room_type": "Type de chambre",
+      "meal_plan": "Formule repas",
+      "view": "Vue (optionnel)",
+      "taxes_included": "Taxes incluses",
+      "remarques": "Remarques",
+      "room_types": {
+        "single": "Single",
+        "double": "Double",
+        "triple": "Triple",
+        "quadruple": "Quadruple"
+      },
+      "meal_plans": {
+        "petit_dejeuner": "Petit déjeuner",
+        "demi_pension": "Demi-pension",
+        "pension_complete": "Pension complète"
+      },
+      "views": {
+        "kaaba": "Vue Kaaba",
+        "haram": "Vue Haram",
+        "city": "Vue City"
+      }
+    },
+    "transferts": {
+      "title": "Transferts / Train",
+      "add_transfer": "+ Ajouter un transfert",
+      "remove": "Supprimer",
+      "required_transfers": "Transferts obligatoires",
+      "optional_transfers": "Transferts optionnels",
+      "train_section": "Train Haramain",
+      "add_train": "+ Ajouter le train",
+      "type_vehicule": "Type de véhicule *",
+      "date": "Date",
+      "time": "Heure",
+      "nb_vehicles": "Nombre de véhicules *",
+      "unit_price": "Prix unitaire *",
+      "train_trajet": "Trajet",
+      "train_classe": "Classe",
+      "train_nb_passagers": "Nb passagers *",
+      "train_price_per_passenger": "Prix par passager *",
+      "trajets": {
+        "aeroport_makkah_hotel": "Aéroport Jeddah -> Hôtel Makkah",
+        "makkah_hotel_aeroport": "Hôtel Makkah -> Aéroport Jeddah",
+        "aeroport_medine_hotel": "Aéroport Médine -> Hôtel Médine",
+        "medine_hotel_aeroport": "Hôtel Médine -> Aéroport Médine"
+      },
+      "vehicules": {
+        "GMC_Yukon": "GMC Yukon",
+        "Mercedes_Classe_E": "Mercedes Classe E",
+        "Bus_VIP_prive": "Bus VIP privé"
+      }
+    },
+    "prestations_vip": {
+      "title": "Prestations VIP",
+      "add_prestation": "+ Ajouter une prestation",
+      "remove": "Supprimer",
+      "type": "Type de prestation *",
+      "description": "Description",
+      "quantity": "Quantité *",
+      "unit_price": "Prix unitaire *",
+      "currency": "Devise",
+      "other": "Autre (description personnalisée)",
+      "types": {
+        "ziyarat": "Ziyarat privée",
+        "lounge": "Lounge VIP",
+        "fast_track": "Fast-track",
+        "bagages": "Bagages supplémentaires",
+        "zamzam": "Eau Zamzam",
+        "autre": "Autre"
+      }
+    },
+    "financier": {
+      "title": "Informations financières",
+      "taux_sar": "Taux SAR -> DZD *",
+      "taux_usd": "Taux USD -> DZD *",
+      "taux_eur": "Taux EUR -> DZD *",
+      "marge_type": "Type de marge *",
+      "marge_valeur": "Valeur de la marge *",
+      "remise": "Remise (décimal)",
+      "notes_internes": "Notes internes",
+      "margin_types": {
+        "pourcentage": "Pourcentage (%)",
+        "montant_fixe": "Montant fixe"
+      }
+    },
+    "recapitulatif": {
+      "title": "Récapitulatif du devis",
+      "passagers": "Passagers",
+      "vols": "Vols",
+      "hebergements": "Hébergements",
+      "transferts": "Transferts",
+      "prestations": "Prestations VIP"
+    }
+  },
+  "marge": {
+    "title": "Dashboard Marge Interne",
+    "internal_only": "Usage interne uniquement - Ne pas exporter vers le client",
+    "period": "Période",
+    "presets": "Préréglages",
+    "preset_month": "Ce mois",
+    "preset_quarter": "Ce trimestre",
+    "preset_year": "Cette année",
+    "preset_custom": "Personnalisé",
+    "refresh": "Actualiser",
+    "loading": "Chargement des données...",
+    "total_devis": "Nombre de devis",
+    "cost_total": "Coût net total",
+    "margin_total": "Marge totale",
+    "revenue": "Chiffre d'affaires",
+    "best_devis": "Meilleur devis (marge la plus élevée)",
+    "margin_evolution": "Évolution des marges par mois",
+    "top_clients": "Top clients (par marge)",
+    "client": "Client",
+    "total_margin": "Marge totale",
+    "devis_count": "Nombre de devis",
+    "monthly_detail": "Détail mensuel",
+    "month": "Mois",
+    "devis_nb": "Nb devis",
+    "net_cost": "Coût net",
+    "margin": "Marge",
+    "ca": "CA",
+    "select_period": "Veuillez sélectionner une période."
+  },
+  "alert": {
+    "passeport": "Alerte passeport",
+    "passeport_text": "Passeport expirant dans moins de 6 mois après le retour"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "empty": "Aucun résultat",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "search": "Rechercher...",
+    "cancel": "Annuler",
+    "confirm_delete": "Confirmer la suppression ?",
+    "back": "Retour",
+    "select_all": "Tout sélectionner",
+    "deselect_all": "Désélectionner tout",
+    "please_fill_name": "Veuillez remplir le nom complet",
+    "please_fill_birthdate": "Veuillez remplir la date de naissance"
+  },
+  "devis": {
+    "notes_internes": "Notes internes",
+    "duplicate": "Dupliquer"
+  },
+  "margin": {
+    "average_margin": "Marge moyenne"
+  }
+}
