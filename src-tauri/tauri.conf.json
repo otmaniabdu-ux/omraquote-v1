@@ -5,8 +5,7 @@
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "frontendDist": "../dist"
   },
   "app": {
     "windows": [
@@ -22,7 +21,6 @@
   },
   "bundle": {
     "active": true,
-    "identifier": "com.elmouhssinouen.omravip",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -30,11 +28,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "targets": ["msi", "appimage"],
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": ""
-    }
+    "targets": ["msi", "appimage"]
   }
 }
