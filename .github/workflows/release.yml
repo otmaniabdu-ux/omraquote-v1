@@ -1,0 +1,113 @@
+# ──────────────────────────────────────────────────
+# OmraVIP Quotes — Build & Release (Tauri native)
+# Compile l'app complète (.msi + .AppImage)
+# Déclenché sur push de tag vX.Y.Z  ou manuellement
+# ──────────────────────────────────────────────────
+name: Release (Tauri Native)
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
+  workflow_dispatch:      # ← déclenchement manuel depuis l'onglet Actions
+
+permissions:
+  contents: write        # ← nécessaire pour créer un Release GitHub
+
+jobs:
+  # ──── Windows (.msi) ─────────────────────────────
+  release-windows:
+    name: Release (Windows — .msi)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Setup Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: rust-release-win-${{ hashFiles('src-tauri/Cargo.toml') }}
+
+      - name: Build Tauri (release)
+        uses: taur-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+
+      - name: Upload .msi asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: src-tauri/target/release/bundle/msi/*.msi
+          generate_release_notes: true
+
+  # ──── Linux (.AppImage) ───────────────────────────
+  release-linux:
+    name: Release (Linux — .AppImage)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Setup Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: rust-release-linux-${{ hashFiles('src-tauri/Cargo.toml') }}
+
+      - name: Install Linux deps (Tauri 2.0 / WebKit)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Build Tauri (release)
+        uses: taur-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+
+      - name: Upload .AppImage asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: src-tauri/target/release/bundle/appimage/*.AppImage
+          generate_release_notes: true

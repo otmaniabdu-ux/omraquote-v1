@@ -1,0 +1,125 @@
+# ──────────────────────────────────────────────────
+# OmraVIP Quotes — CI (build + type-check)
+# Déclenché sur chaque push / PR vers main
+# ──────────────────────────────────────────────────
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ──── Frontend : type-check + build ──────────────
+  frontend:
+    name: Frontend (Vue 3 / TS / Vite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm          # ← npm ci utilise le cache
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript type-check
+        run: npx vue-tsc --noEmit
+
+      - name: Build Vite
+        run: npm run build
+
+  # ──── Backend Rust / Tauri — Windows ─────────────
+  backend-windows:
+    name: Backend (Rust / Tauri — Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Setup Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      # ── Cache cargo registry / index / build ──────
+      - name: Cache Rust
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: rust-cache-windows-${{ hashFiles('src-tauri/Cargo.toml') }}
+
+      - name: cargo check (tout)
+        working-directory: src-tauri
+        run: cargo check --all-targets
+
+      - name: cargo check (feature pdf-generation)
+        working-directory: src-tauri
+        run: cargo check --features pdf-generation
+
+  # ──── Backend Rust / Tauri — Linux ───────────────
+  backend-linux:
+    name: Backend (Rust / Tauri — Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Setup Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      # ── Cache cargo ───────────────────────────────
+      - name: Cache Rust
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: rust-cache-linux-${{ hashFiles('src-tauri/Cargo.toml') }}
+
+      - name: Install Linux deps (Tauri 2.0 / WebKit)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: cargo check (tout)
+        working-directory: src-tauri
+        run: cargo check --all-targets
+
+      - name: cargo check (feature pdf-generation)
+        working-directory: src-tauri
+        run: cargo check --features pdf-generation
