@@ -120,3 +120,14 @@ All Critical, Important, and Minor issues from the initial code review have been
 ### Verification
 - `npm run build` passes 0 TypeScript errors
 - Rust compilation requires `cargo check --all-targets` (PDF only with `--features pdf-generation`)
+
+### Phase 1 & 2 Critical Fixes (July 2026)
+- **C1 (rusqlite features)**: Added `chrono` and `rust_decimal` features to `rusqlite` in `Cargo.toml` to prevent compilation failure.
+- **C2 (Date mapping)**: Fixed runtime database crashes by changing `NaiveDate` to `NaiveDateTime` for `created_at`, `updated_at`, and `date_creation` in Rust models.
+- **C3 (unwrap panic)**: Replaced unsafe `.unwrap()` call on devis ID with safe `.ok_or()?` error handling in `commands/devis.rs`.
+- **C4 (Financial inputs)**: Fixed data loss where exchange rates and margin settings were discarded by merging them in `handleUpdate` and loading them dynamically in `saveDevis`.
+- **C5 (VIP Prestations)**: Pushed "Autre" custom prestations directly into `localPrestations` array instead of using separate refs, ensuring they are saved.
+- **C6 (Haramain Train)**: Restored train transport data which was being discarded in `handleUpdate`.
+- **C7 (Reactivity issues)**: Added deep watchers on `localSegments` and `localHebergements` in the wizard to ensure changes are emitted to parent on text edit.
+- **C8 (Récapitulatif Totaux)**: Fixed blank/zero totals on the Recap step by passing the `totaux` prop to `RecapitulatifDevis`.
+

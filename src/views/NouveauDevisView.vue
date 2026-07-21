@@ -162,8 +162,10 @@ async function saveDevis() {
     taux_sar_dzd: currentDevis.value?.taux_sar_dzd || '1.0000',
     taux_usd_dzd: currentDevis.value?.taux_usd_dzd || '1.0000',
     taux_eur_dzd: currentDevis.value?.taux_eur_dzd || '1.0000',
-    marge_type: 'pourcentage',
-    marge_valeur: '15',
+    marge_type: currentDevis.value?.marge_type || 'pourcentage',
+    marge_valeur: currentDevis.value?.marge_valeur || '15',
+    remise: currentDevis.value?.remise,
+    notes_internes: currentDevis.value?.notes_internes,
     statut: 'brouillon',
   };
 
@@ -252,6 +254,29 @@ function handleUpdate(data: Record<string, any>) {
         break;
       case 'prestations': prestationsData.value.prestations = (value as PrestationVip[]) || [];
         break;
+      case 'taux_sar_dzd':
+      case 'taux_usd_dzd':
+      case 'taux_eur_dzd':
+      case 'marge_type':
+      case 'marge_valeur':
+      case 'remise':
+      case 'notes_internes':
+      case 'devise_achat':
+        if (currentDevis.value) {
+          (currentDevis.value as any)[key] = value;
+        }
+        break;
+      case 'trainHaramain':
+        transfertsData.value.trainHaramain = value || {};
+        if (currentDevis.value) {
+          (currentDevis.value as any).trainHaramain = value;
+        }
+        break;
+      case 'trainDevise':
+        if (currentDevis.value) {
+          (currentDevis.value as any).trainDevise = value;
+        }
+        break;
       default: break;
     }
   }
@@ -331,6 +356,7 @@ onMounted(async () => {
         :hebergements="hebergements"
         :transferts="transfertsData.transferts"
         :prestations="prestationsData.prestations"
+        :totaux="(currentDevis as any)"
         @update="handleUpdate"
         @next="nextStep"
         @prev="prevStep"

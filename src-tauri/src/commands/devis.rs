@@ -24,7 +24,8 @@ pub fn get_alertes_tous_devis(state: State<DbState>) -> Result<Vec<serde_json::V
         let mut stmt = conn.prepare(
             "SELECT date_expiration_passeport FROM passagers WHERE devis_id = ?1"
         ).map_err(|e| e.to_string())?;
-        let mut rows = stmt.query(&[&devis.id.unwrap()]).map_err(|e| e.to_string())?;
+        let devis_id = devis.id.ok_or("L'ID du devis est manquant")?;
+        let mut rows = stmt.query(&[&devis_id]).map_err(|e| e.to_string())?;
 
         let mut alerte = false;
         while let Some(row) = rows.next().map_err(|e| e.to_string())? {

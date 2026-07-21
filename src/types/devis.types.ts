@@ -139,6 +139,7 @@ export interface DevisCreate {
   marge_type: 'pourcentage' | 'montant_fixe';
   marge_valeur: string; // chaîne décimale
   statut: 'brouillon';
+  remise?: string;
   notes_internes?: string;
 }
 

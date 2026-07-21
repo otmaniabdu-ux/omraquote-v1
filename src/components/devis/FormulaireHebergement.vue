@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useCatalogueStore } from '@/stores/catalogueStore';
 import { useCalculNuitees } from '@/composables/useCalculNuitees';
@@ -75,6 +75,8 @@ function updateHotelName(idx: number, name: string) {
 function emitUpdate() {
   emit('update', { hebergements: localHebergements.value });
 }
+
+watch(localHebergements, () => emitUpdate(), { deep: true });
 </script>
 
 <template>

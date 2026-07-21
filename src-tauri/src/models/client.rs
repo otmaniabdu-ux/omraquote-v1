@@ -1,4 +1,4 @@
-use chrono::NaiveDate;
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -13,8 +13,8 @@ pub struct Client {
     pub pays: Option<String>,
     pub type_client: String, // 'particulier' ou 'agence'
     pub remarques: Option<String>,
-    pub created_at: NaiveDate,
-    pub updated_at: NaiveDate,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

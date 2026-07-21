@@ -25,7 +25,6 @@ const DEVISES = ['SAR', 'USD', 'EUR', 'DZD'];
 
 // Lignes pre-remplies (option guide/vehicule pour ziyarat)
 const localPrestations = ref<PrestationVip[]>([]);
-const showOther = ref(false);
 
 function initPreRemplies() {
   if (localPrestations.value.length === 0) {
@@ -43,22 +42,25 @@ function initPreRemplies() {
 }
 
 function addAutre() {
-  showOther.value = true;
   if (localPrestations.value.length === 0) {
     initPreRemplies(); // force initialisation si necessaire
   }
+  localPrestations.value.push({
+    id: undefined,
+    devis_id: props.devis?.id || 0,
+    type_prestation: 'autre',
+    description: '',
+    prix_unitaire: '0',
+    quantite: 1,
+    devise_prix: props.devis?.devise_achat || 'SAR',
+    remarques: '',
+  });
 }
 
 function removePrestation(idx: number) {
   localPrestations.value.splice(idx, 1);
 }
 
-// Valeurs pour la prestation "autre" (personnalisee)
-const otherDescription = ref('');
-const otherQuantite = ref(1);
-const otherPrice = ref('0');
-const otherDevise = ref('SAR');
-const otherRemarques = ref('');
 const optionGuide = ref(false);
 const optionVehicule = ref(false);
 
@@ -134,43 +136,7 @@ watch(
       </div>
     </div>
 
-    <!-- Autre (personnalise) -->
-    <div v-if="showOther" class="prestation-item prestation-autre">
-      <div class="prestation-header">
-        <span>{{ $t('wizard.prestations_vip.other') }}</span>
-        <button class="btn-sm btn-remove" @click="showOther = false">&#10005;</button>
-      </div>
-
-      <div class="prestation-fields">
-        <div class="field--full">
-          <label>{{ $t('wizard.prestations_vip.description') }}</label>
-          <input type="text" v-model="otherDescription" :placeholder="$t('wizard.prestations_vip.description')" />
-        </div>
-
-        <div class="field">
-          <label>{{ $t('wizard.prestations_vip.quantity') }}</label>
-          <input type="number" min="1" v-model.number="otherQuantite" />
-        </div>
-
-        <div class="field">
-          <label>{{ $t('wizard.prestations_vip.unit_price') }}</label>
-          <input type="text" v-model="otherPrice" placeholder="0" />
-        </div>
-
-        <div class="field">
-          <label>{{ $t('wizard.vols.currency') }}</label>
-          <select v-model="otherDevise">
-            <option v-for="d in DEVISES" :key="d" :value="d">{{ d }}</option>
-          </select>
-        </div>
-
-        <div class="field field--full">
-          <label>{{ $t('devis.notes_internes') || 'Remarques' }}</label>
-          <input type="text" v-model="otherRemarques" />
-        </div>
-      </div>
-    </div>
-
+    
     <button class="btn btn-secondary" @click="addAutre">
       {{ $t('wizard.prestations_vip.add_prestation') }}
     </button>

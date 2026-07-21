@@ -1,4 +1,4 @@
-use chrono::NaiveDate;
+use chrono::{NaiveDate, NaiveDateTime};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
@@ -7,7 +7,7 @@ pub struct Devis {
     pub id: Option<i64>,
     pub numero_devis: String,
     pub client_id: i64,
-    pub date_creation: NaiveDate,
+    pub date_creation: NaiveDateTime,
     pub date_depart: NaiveDate,
     pub date_retour: NaiveDate,
     pub type_visa: String, // 'omra_standard', 'touristique', 'hadj'

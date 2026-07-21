@@ -139,3 +139,11 @@ Le projet est structuré autour de 5 agents spécialisés (`.claude/agents/`) :
 ## Licence
 
 Copyright © El Mouhssinouen Tours — Tous droits réservés.
+
+---
+
+### Dernières Mises à Jour (Juillet 2026)
+- **Corrections de Stabilité** : Correction des crashs de parsing de base de données (conversion `NaiveDate` vers `NaiveDateTime` pour les dates système) et sécurisation du backend Tauri.
+- **Résolution des pertes de données** : Intégration complète des données financières, des trains Haramain, des prestations VIP personnalisées et rétablissement de la réactivité sur les formulaires d'hébergement et de vol.
+- **Correction Compilation** : Résolution du problème de compilation Rust en activant les fonctionnalités `chrono` et `rust_decimal` pour `rusqlite`.
+

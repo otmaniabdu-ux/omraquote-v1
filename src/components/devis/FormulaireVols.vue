@@ -107,8 +107,10 @@ function isOutboundSegment(idx: number): boolean {
 }
 
 function emitUpdate() {
-  emit('update', { segments: localSegments.value });
+  emit('update', { segments_vol: localSegments.value });
 }
+
+watch(localSegments, () => emitUpdate(), { deep: true });
 </script>
 
 <template>
