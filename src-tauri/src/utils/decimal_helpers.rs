@@ -1,5 +1,6 @@
 use rust_decimal::Decimal;
 use rust_decimal::prelude::FromPrimitive;
+use std::str::FromStr;
 
 /// Arrondit un Decimal à 2 décimales avec la stratégie MidpointAwayFromZero (arrondi bancaire)
 pub fn round_to_two_decimals(value: Decimal) -> Decimal {

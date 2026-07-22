@@ -1,9 +1,12 @@
 use chrono::NaiveDate;
+use crate::error::{AppResult, AppError};
 
 /// Calcule le nombre de nuits entre deux dates (checkout - checkin) en jours entiers.
-pub fn calculer_nuitees(date_checkin: NaiveDate, date_checkout: NaiveDate) -> Result<i64, String> {
+pub fn calculer_nuitees(date_checkin: NaiveDate, date_checkout: NaiveDate) -> AppResult<i64> {
     if date_checkout <= date_checkin {
-        return Err("La date de checkout doit être postérieure à la date de checkin".to_string());
+        return Err(AppError::Validation(
+            "La date de checkout doit être postérieure à la date de checkin".to_string()
+        ));
     }
     let diff = date_checkout.signed_duration_since(date_checkin);
     Ok(diff.num_days())
@@ -41,6 +44,6 @@ mod tests {
         let checkout = NaiveDate::from_ymd_opt(2026, 8, 1).unwrap();
         let result = calculer_nuitees(checkin, checkout);
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "La date de checkout doit être postérieure à la date de checkin");
+        assert!(result.unwrap_err().to_string().contains("postérieure"));
     }
 }

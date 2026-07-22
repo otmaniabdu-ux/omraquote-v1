@@ -5,6 +5,7 @@ mod models;
 mod db;
 mod services;
 mod utils;
+pub mod error;
 
 use db::connection::{init_db, run_migrations};
 use db::DbState;

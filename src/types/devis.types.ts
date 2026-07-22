@@ -35,6 +35,7 @@ export interface Devis {
   statut: 'brouillon' | 'finalise' | 'envoye' | 'accepte' | 'perdu';
   remise?: string;
   notes_internes?: string;
+  updated_at?: string;
 }
 
 export interface Passager {

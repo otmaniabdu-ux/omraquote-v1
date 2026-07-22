@@ -131,3 +131,10 @@ All Critical, Important, and Minor issues from the initial code review have been
 - **C7 (Reactivity issues)**: Added deep watchers on `localSegments` and `localHebergements` in the wizard to ensure changes are emitted to parent on text edit.
 - **C8 (Récapitulatif Totaux)**: Fixed blank/zero totals on the Recap step by passing the `totaux` prop to `RecapitulatifDevis`.
 
+### Phase 3 Refactoring (July 2026)
+- **Architecture Refactoring (T1 & T2)**: Moved all database queries (`rusqlite`) from command controllers (`src-tauri/src/commands/`) to a service layer (`src-tauri/src/services/db/`).
+- **Global Error Handling**: Standardized error propagation using `AppError` and `AppResult` across all commands and database service files.
+- **IPC controller cleanup**: Command files (`clients.rs`, `compagnies.rs`, `devis.rs`, `hebergements.rs`, `hotels.rs`, `passagers.rs`, `prestations.rs`, `transferts.rs`, `vols.rs`, `validation.rs`, `pdf.rs`, `marge.rs`) have been cleaned and now only delegate database tasks to `services/db/`.
+- **Fixed decimals & types handling**: Handled decimal serialization as text strings inside database tables cleanly, using `Decimal::from_str` and correct rusqlite parameter passing (`params!`).
+
+

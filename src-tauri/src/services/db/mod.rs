@@ -1,0 +1,10 @@
+pub mod clients;
+pub mod compagnies;
+pub mod hebergements;
+pub mod hotels;
+pub mod passagers;
+pub mod prestations;
+pub mod transferts;
+pub mod vols;
+pub mod devis;
+pub mod validation;

@@ -1,4 +1,5 @@
 use rust_decimal::Decimal;
+use crate::error::{AppResult, AppError};
 use crate::models::devis::Devis;
 
 /// Convertit un montant exprimé dans une devise source en DZD en utilisant le taux verrouillé du devis.
@@ -6,13 +7,13 @@ pub fn convertir_vers_dzd(
     montant: Decimal,
     devise_source: &str,
     devis: &Devis,
-) -> Result<Decimal, String> {
+) -> AppResult<Decimal> {
     let taux = match devise_source {
         "SAR" => devis.taux_sar_dzd,
         "USD" => devis.taux_usd_dzd,
         "EUR" => devis.taux_eur_dzd,
         "DZD" => Decimal::ONE, // Pas de conversion pour DZD
-        _ => return Err(format!("Devise inconnue: {}", devise_source)),
+        _ => return Err(AppError::Validation(format!("Devise inconnue: {}", devise_source))),
     };
     Ok(montant * taux)
 }
@@ -22,14 +23,15 @@ mod tests {
     use super::*;
     use rust_decimal_macros::dec;
     use crate::models::devis::Devis;
-    use chrono::NaiveDate;
+    use chrono::{NaiveDate, NaiveDateTime};
 
     fn create_test_devis() -> Devis {
+        let date_creation = NaiveDate::from_ymd_opt(2026, 7, 1).unwrap().and_hms_opt(0, 0, 0).unwrap();
         Devis {
             id: Some(1),
             numero_devis: "DEVIS-2026-07-001".to_string(),
             client_id: 1,
-            date_creation: NaiveDate::from_ymd_opt(2026, 7, 1).unwrap(),
+            date_creation,
             date_depart: NaiveDate::from_ymd_opt(2026, 8, 1).unwrap(),
             date_retour: NaiveDate::from_ymd_opt(2026, 8, 15).unwrap(),
             type_visa: "omra_standard".to_string(),
@@ -46,6 +48,7 @@ mod tests {
             statut: "brouillon".to_string(),
             remise: Some(dec!(0.0)),
             notes_internes: None,
+            updated_at: Some(date_creation),
         }
     }
 

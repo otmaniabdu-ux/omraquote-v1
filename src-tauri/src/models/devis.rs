@@ -24,6 +24,7 @@ pub struct Devis {
     pub statut: String, // 'brouillon', 'finalise', 'envoye', 'accepte', 'perdu'
     pub remise: Option<Decimal>,
     pub notes_internes: Option<String>,
+    pub updated_at: Option<NaiveDateTime>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

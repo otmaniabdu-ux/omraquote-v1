@@ -1,6 +1,7 @@
 use rusqlite::{Connection, Result};
 use std::path::PathBuf;
 use tauri::AppHandle;
+use tauri::Manager;
 use std::fs;
 
 /// Obtient le chemin du fichier SQLite (dans le répertoire de données de l'application)
@@ -27,7 +28,7 @@ pub fn init_db(app_handle: &AppHandle) -> Result<Connection> {
 pub fn run_migrations(conn: &Connection) -> Result<()> {
     // On utilise le schéma SQL fourni dans database/schema.sql
     // Pour simplifier, on l'exécute directement via include_str!
-    let schema = include_str!("../../../../database/schema.sql");
+    let schema = include_str!("../../../database/schema.sql");
     conn.execute_batch(schema)?;
     Ok(())
 }

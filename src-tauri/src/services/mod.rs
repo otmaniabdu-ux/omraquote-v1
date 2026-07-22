@@ -8,3 +8,5 @@ pub mod validation;
 pub mod generation_pdf;
 pub mod agregats_marge;
 pub mod fonts;
+pub mod db;
+

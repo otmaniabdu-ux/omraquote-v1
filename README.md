@@ -146,4 +146,6 @@ Copyright © El Mouhssinouen Tours — Tous droits réservés.
 - **Corrections de Stabilité** : Correction des crashs de parsing de base de données (conversion `NaiveDate` vers `NaiveDateTime` pour les dates système) et sécurisation du backend Tauri.
 - **Résolution des pertes de données** : Intégration complète des données financières, des trains Haramain, des prestations VIP personnalisées et rétablissement de la réactivité sur les formulaires d'hébergement et de vol.
 - **Correction Compilation** : Résolution du problème de compilation Rust en activant les fonctionnalités `chrono` et `rust_decimal` pour `rusqlite`.
+- **Refactoring Architectural (Phase 3)** : Centralisation complète de toutes les requêtes SQLite brutes dans une couche de services DB dédiée (`src-tauri/src/services/db/`), harmonisation de la propagation des erreurs via `AppError`/`AppResult` et nettoyage des contrôleurs IPC Tauri.
+
 

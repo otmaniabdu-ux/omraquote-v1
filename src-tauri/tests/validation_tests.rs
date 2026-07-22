@@ -1,4 +1,4 @@
-use omravip_quotes::services::validations::*;
+use omravip_quotes::services::validation::*;
 use chrono::NaiveDate;
 
 #[test]

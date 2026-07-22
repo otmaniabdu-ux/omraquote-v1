@@ -1,50 +1,54 @@
 use chrono::{NaiveDate, Months};
 use rust_decimal::Decimal;
+use crate::error::{AppResult, AppError};
 
 // Re-export de la source unique pour maintenir l'API publique (rétrocompatibilité)
 pub use crate::services::alerte_passeport::alerte_passeport;
 
 /// Valide qu'une date de départ est antérieure à une date de retour.
-pub fn valider_dates_sejour(date_depart: NaiveDate, date_retour: NaiveDate) -> Result<(), String> {
+pub fn valider_dates_sejour(date_depart: NaiveDate, date_retour: NaiveDate) -> AppResult<()> {
     if date_retour <= date_depart {
-        return Err("La date de retour doit être postérieure à la date de départ.".to_string());
+        return Err(AppError::Validation(
+            "La date de retour doit être postérieure à la date de départ.".to_string()
+        ));
     }
     Ok(())
 }
 
 /// Valide qu'une date de checkin est antérieure à une date de checkout.
-pub fn valider_dates_hebergement(checkin: NaiveDate, checkout: NaiveDate) -> Result<(), String> {
+pub fn valider_dates_hebergement(checkin: NaiveDate, checkout: NaiveDate) -> AppResult<()> {
     if checkout <= checkin {
-        return Err("La date de checkout doit être postérieure à la date de checkin.".to_string());
+        return Err(AppError::Validation(
+            "La date de checkout doit être postérieure à la date de checkin.".to_string()
+        ));
     }
     Ok(())
 }
 
 /// Valide qu'une date de vol est comprise dans la période du séjour (optionnel).
-pub fn valider_date_vol_dans_sejour(date_vol: NaiveDate, depart: NaiveDate, retour: NaiveDate) -> Result<(), String> {
+pub fn valider_date_vol_dans_sejour(date_vol: NaiveDate, depart: NaiveDate, retour: NaiveDate) -> AppResult<()> {
     if date_vol < depart || date_vol > retour {
-        return Err(format!(
+        return Err(AppError::Validation(format!(
             "La date de vol ({}) est en dehors de la période du séjour ({} - {}).",
             date_vol, depart, retour
-        ));
+        )));
     }
     Ok(())
 }
 
 /// Wrapper pour les commandes Tauri : valide les dates d'un devis.
 /// Signature compatible avec `commands::validation::valider_dates_devis_command`.
-pub fn valider_dates_devis(date_depart: NaiveDate, date_retour: NaiveDate) -> Result<(), String> {
+pub fn valider_dates_devis(date_depart: NaiveDate, date_retour: NaiveDate) -> AppResult<()> {
     valider_dates_sejour(date_depart, date_retour)
 }
 
 /// Wrapper pour les commandes Tauri : valide les dates d'un hébergement.
-/// Signature compatible avec `commands::validation::valider_hebergement_command`.
 pub fn valider_hebergement(
     checkin: NaiveDate,
     checkout: NaiveDate,
     _date_depart: NaiveDate,
     _date_retour: NaiveDate,
-) -> Result<(), String> {
+) -> AppResult<()> {
     valider_dates_hebergement(checkin, checkout)
 }
 
@@ -80,12 +84,16 @@ pub fn verifier_alerte_passeport_passager(
 }
 
 /// Valide qu'un nombre de passagers par catégorie n'est pas négatif.
-pub fn valider_nombre_passagers(nb_adultes: i32, nb_enfants: i32, nb_bebes: i32) -> Result<(), String> {
+pub fn valider_nombre_passagers(nb_adultes: i32, nb_enfants: i32, nb_bebes: i32) -> AppResult<()> {
     if nb_adultes < 0 || nb_enfants < 0 || nb_bebes < 0 {
-        return Err("Le nombre de passagers ne peut pas être négatif.".to_string());
+        return Err(AppError::Validation(
+            "Le nombre de passagers ne peut pas être négatif.".to_string()
+        ));
     }
     if nb_adultes == 0 && nb_enfants == 0 && nb_bebes == 0 {
-        return Err("Au moins un passager est requis.".to_string());
+        return Err(AppError::Validation(
+            "Au moins un passager est requis.".to_string()
+        ));
     }
     Ok(())
 }
@@ -147,7 +155,7 @@ mod tests {
             categorie: "adulte".to_string(),
             nom_complet: "OK Expired".to_string(),
             date_naissance: NaiveDate::from_ymd_opt(1980, 1, 1).unwrap(),
-            nationalite: "FR".to_string(),
+            nationalite: Some("FR".to_string()),
             numero_passeport: Some("PK1".to_string()),
             date_expiration_passeport: Some(NaiveDate::from_ymd_opt(2028, 1, 1).unwrap()),
             lieu_delivrance: Some("Paris".to_string()),
@@ -160,7 +168,7 @@ mod tests {
             categorie: "adulte".to_string(),
             nom_complet: "Alert Expired".to_string(),
             date_naissance: NaiveDate::from_ymd_opt(1985, 1, 1).unwrap(),
-            nationalite: "FR".to_string(),
+            nationalite: Some("FR".to_string()),
             numero_passeport: Some("PK2".to_string()),
             date_expiration_passeport: Some(NaiveDate::from_ymd_opt(2026, 12, 1).unwrap()),
             lieu_delivrance: Some("Paris".to_string()),
@@ -173,7 +181,7 @@ mod tests {
             categorie: "adulte".to_string(),
             nom_complet: "No Passport".to_string(),
             date_naissance: NaiveDate::from_ymd_opt(1990, 1, 1).unwrap(),
-            nationalite: "FR".to_string(),
+            nationalite: None,
             numero_passeport: None,
             date_expiration_passeport: None,
             lieu_delivrance: None,
@@ -199,7 +207,7 @@ mod tests {
             categorie: "adulte".to_string(),
             nom_complet: "OK Expired".to_string(),
             date_naissance: NaiveDate::from_ymd_opt(1980, 1, 1).unwrap(),
-            nationalite: "FR".to_string(),
+            nationalite: Some("FR".to_string()),
             numero_passeport: Some("PK1".to_string()),
             date_expiration_passeport: Some(NaiveDate::from_ymd_opt(2028, 1, 1).unwrap()),
             lieu_delivrance: Some("Paris".to_string()),
@@ -212,7 +220,7 @@ mod tests {
             categorie: "adulte".to_string(),
             nom_complet: "Alert Expired".to_string(),
             date_naissance: NaiveDate::from_ymd_opt(1985, 1, 1).unwrap(),
-            nationalite: "FR".to_string(),
+            nationalite: Some("FR".to_string()),
             numero_passeport: Some("PK2".to_string()),
             date_expiration_passeport: Some(NaiveDate::from_ymd_opt(2026, 12, 1).unwrap()),
             lieu_delivrance: Some("Paris".to_string()),

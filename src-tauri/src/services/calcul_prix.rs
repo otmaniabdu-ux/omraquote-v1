@@ -1,4 +1,5 @@
 use rust_decimal::Decimal;
+use crate::error::AppResult;
 use crate::models::devis::Devis;
 use crate::models::segment_vol::SegmentVol;
 use crate::models::hebergement::Hebergement;
@@ -17,7 +18,7 @@ pub fn calculer_totaux_devis(
     transferts: &[Transfert],
     prestations: &[PrestationVip],
     // On pourrait ajouter train_haramain plus tard
-) -> Result<(Decimal, Decimal, Decimal), String> {
+) -> AppResult<(Decimal, Decimal, Decimal)> {
     let mut cout_net_total = Decimal::ZERO;
 
     // 1. Vols : on prend le prix par passager selon la catégorie.
@@ -67,7 +68,9 @@ pub fn calculer_totaux_devis(
             let prix_vente = cout_net_total + marge;
             (marge, prix_vente)
         }
-        _ => return Err("Type de marge inconnu".to_string()),
+        _ => return Err(crate::error::AppError::Validation(
+            "Type de marge inconnu".to_string()
+        )),
     };
 
     // Arrondi final
@@ -90,11 +93,12 @@ mod tests {
     use chrono::NaiveDate;
 
     fn create_test_devis() -> Devis {
+        let date_creation = NaiveDate::from_ymd_opt(2026, 7, 1).unwrap().and_hms_opt(0, 0, 0).unwrap();
         Devis {
             id: Some(1),
             numero_devis: "DEVIS-2026-07-001".to_string(),
             client_id: 1,
-            date_creation: NaiveDate::from_ymd_opt(2026, 7, 1).unwrap(),
+            date_creation,
             date_depart: NaiveDate::from_ymd_opt(2026, 8, 1).unwrap(),
             date_retour: NaiveDate::from_ymd_opt(2026, 8, 15).unwrap(),
             type_visa: "omra_standard".to_string(),
@@ -111,6 +115,7 @@ mod tests {
             statut: "brouillon".to_string(),
             remise: Some(dec!(0.0)),
             notes_internes: None,
+            updated_at: Some(date_creation),
         }
     }
 
