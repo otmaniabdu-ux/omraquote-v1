@@ -94,55 +94,51 @@ pub fn list_by_devis(conn: &Connection, devis_id: i64) -> AppResult<Vec<Transfer
 }
 
 pub fn update(conn: &Connection, id: i64, update_data: TransfertUpdate) -> AppResult<Transfert> {
-    let mut sets = Vec::new();
+    let mut fields = Vec::new();
     let mut params_vec: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
 
     if let Some(type_transfert) = update_data.type_transfert {
-        sets.push("type_transfert = ?");
+        fields.push("type_transfert");
         params_vec.push(Box::new(type_transfert));
     }
     if let Some(trajet) = update_data.trajet {
-        sets.push("trajet = ?");
+        fields.push("trajet");
         params_vec.push(Box::new(trajet));
     }
     if let Some(type_vehicule) = update_data.type_vehicule {
-        sets.push("type_vehicule = ?");
+        fields.push("type_vehicule");
         params_vec.push(Box::new(type_vehicule));
     }
     if let Some(date_transfert) = update_data.date_transfert {
-        sets.push("date_transfert = ?");
+        fields.push("date_transfert");
         params_vec.push(Box::new(date_transfert));
     }
     if let Some(heure_transfert) = update_data.heure_transfert {
-        sets.push("heure_transfert = ?");
+        fields.push("heure_transfert");
         params_vec.push(Box::new(heure_transfert));
     }
     if let Some(nombre_vehicules) = update_data.nombre_vehicules {
-        sets.push("nombre_vehicules = ?");
+        fields.push("nombre_vehicules");
         params_vec.push(Box::new(nombre_vehicules));
     }
     if let Some(prix_unitaire) = update_data.prix_unitaire {
-        sets.push("prix_unitaire = ?");
+        fields.push("prix_unitaire");
         params_vec.push(Box::new(prix_unitaire.to_string()));
     }
     if let Some(devise_prix) = update_data.devise_prix {
-        sets.push("devise_prix = ?");
+        fields.push("devise_prix");
         params_vec.push(Box::new(devise_prix));
     }
     if let Some(remarques) = update_data.remarques {
-        sets.push("remarques = ?");
+        fields.push("remarques");
         params_vec.push(Box::new(remarques));
     }
 
-    if sets.is_empty() {
+    if fields.is_empty() {
         return Err(AppError::Validation("Aucune donnee a mettre a jour".to_string()));
     }
 
-    sets.push("updated_at = CURRENT_TIMESTAMP");
-    let query = format!(
-        "UPDATE transferts SET {} WHERE id = ?",
-        sets.join(", ")
-    );
+    let query = crate::utils::query_builder::build_update_query("transferts", &fields, "id");
 
     let mut stmt = conn.prepare(&query)?;
     let mut final_params: Vec<&dyn rusqlite::ToSql> = params_vec.iter().map(|p| p.as_ref()).collect();

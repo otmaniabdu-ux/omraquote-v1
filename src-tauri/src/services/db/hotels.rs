@@ -85,51 +85,47 @@ pub fn list(conn: &Connection, actif_seulement: Option<bool>) -> AppResult<Vec<H
 }
 
 pub fn update(conn: &Connection, id: i64, update_data: HotelCatalogueUpdate) -> AppResult<HotelCatalogue> {
-    let mut sets = Vec::new();
+    let mut fields = Vec::new();
     let mut params_vec: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
 
     if let Some(nom_hotel) = update_data.nom_hotel {
-        sets.push("nom_hotel = ?");
+        fields.push("nom_hotel");
         params_vec.push(Box::new(nom_hotel));
     }
     if let Some(ville) = update_data.ville {
-        sets.push("ville = ?");
+        fields.push("ville");
         params_vec.push(Box::new(ville));
     }
     if let Some(categorie) = update_data.categorie {
-        sets.push("categorie = ?");
+        fields.push("categorie");
         params_vec.push(Box::new(categorie));
     }
     if let Some(adresse) = update_data.adresse {
-        sets.push("adresse = ?");
+        fields.push("adresse");
         params_vec.push(Box::new(adresse));
     }
     if let Some(contact) = update_data.contact {
-        sets.push("contact = ?");
+        fields.push("contact");
         params_vec.push(Box::new(contact));
     }
     if let Some(site_web) = update_data.site_web {
-        sets.push("site_web = ?");
+        fields.push("site_web");
         params_vec.push(Box::new(site_web));
     }
     if let Some(remarques) = update_data.remarques {
-        sets.push("remarques = ?");
+        fields.push("remarques");
         params_vec.push(Box::new(remarques));
     }
     if let Some(actif) = update_data.actif {
-        sets.push("actif = ?");
+        fields.push("actif");
         params_vec.push(Box::new(actif));
     }
 
-    if sets.is_empty() {
+    if fields.is_empty() {
         return Err(AppError::Validation("Aucune donnee a mettre a jour".to_string()));
     }
 
-    sets.push("updated_at = CURRENT_TIMESTAMP");
-    let query = format!(
-        "UPDATE catalogue_hotels SET {} WHERE id = ?",
-        sets.join(", ")
-    );
+    let query = crate::utils::query_builder::build_update_query("catalogue_hotels", &fields, "id");
 
     let mut stmt = conn.prepare(&query)?;
     let mut final_params: Vec<&dyn rusqlite::ToSql> = params_vec.iter().map(|p| p.as_ref()).collect();

@@ -82,43 +82,39 @@ pub fn list_by_devis(conn: &Connection, devis_id: i64) -> AppResult<Vec<Prestati
 }
 
 pub fn update(conn: &Connection, id: i64, update_data: PrestationVipUpdate) -> AppResult<PrestationVip> {
-    let mut sets = Vec::new();
+    let mut fields = Vec::new();
     let mut params_vec: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
 
     if let Some(type_prestation) = update_data.type_prestation {
-        sets.push("type_prestation = ?");
+        fields.push("type_prestation");
         params_vec.push(Box::new(type_prestation));
     }
     if let Some(description) = update_data.description {
-        sets.push("description = ?");
+        fields.push("description");
         params_vec.push(Box::new(description));
     }
     if let Some(prix_unitaire) = update_data.prix_unitaire {
-        sets.push("prix_unitaire = ?");
+        fields.push("prix_unitaire");
         params_vec.push(Box::new(prix_unitaire.to_string()));
     }
     if let Some(quantite) = update_data.quantite {
-        sets.push("quantite = ?");
+        fields.push("quantite");
         params_vec.push(Box::new(quantite));
     }
     if let Some(devise_prix) = update_data.devise_prix {
-        sets.push("devise_prix = ?");
+        fields.push("devise_prix");
         params_vec.push(Box::new(devise_prix));
     }
     if let Some(remarques) = update_data.remarques {
-        sets.push("remarques = ?");
+        fields.push("remarques");
         params_vec.push(Box::new(remarques));
     }
 
-    if sets.is_empty() {
+    if fields.is_empty() {
         return Err(AppError::Validation("Aucune donnee a mettre a jour".to_string()));
     }
 
-    sets.push("updated_at = CURRENT_TIMESTAMP");
-    let query = format!(
-        "UPDATE prestations_vip SET {} WHERE id = ?",
-        sets.join(", ")
-    );
+    let query = crate::utils::query_builder::build_update_query("prestations_vip", &fields, "id");
 
     let mut stmt = conn.prepare(&query)?;
     let mut final_params: Vec<&dyn rusqlite::ToSql> = params_vec.iter().map(|p| p.as_ref()).collect();

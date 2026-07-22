@@ -232,6 +232,15 @@
     "confirm_delete": "تأكيد الحذف؟",
     "back": "رجوع",
     "select_all": "تحديد الكل",
-    "deselect_all": "إلغاء تحديد الكل"
+    "deselect_all": "إلغاء تحديد الكل",
+    "please_fill_name": "يرجى إدخال الاسم الكامل",
+    "please_fill_birthdate": "يرجى إدخال تاريخ الميلاد"
+  },
+  "devis": {
+    "notes_internes": "ملاحظات داخلية",
+    "duplicate": "تكرار"
+  },
+  "margin": {
+    "average_margin": "متوسط الهامش"
   }
 }

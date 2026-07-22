@@ -11,3 +11,4 @@ pub mod transferts;
 pub mod prestations;
 pub mod pdf;
 pub mod parametres;
+pub mod calculs;

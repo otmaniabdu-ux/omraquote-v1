@@ -42,6 +42,8 @@ use commands::pdf::{generate_pdf_client, generate_pdf_interne};
 #[cfg(not(feature = "pdf-generation"))]
 use commands::pdf::{generate_pdf_client, generate_pdf_interne};
 
+use commands::calculs::{calculer_conversion_backend, calculer_marge_indicative_backend};
+
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
@@ -93,6 +95,9 @@ pub fn run() {
             list_compagnies,
             update_compagnie,
             delete_compagnie,
+            // Calculs
+            calculer_conversion_backend,
+            calculer_marge_indicative_backend,
         ])
         .run(tauri::generate_context!())
         .expect("Erreur lors de l'execution de Tauri");

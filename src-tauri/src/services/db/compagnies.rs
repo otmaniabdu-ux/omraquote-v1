@@ -84,39 +84,35 @@ pub fn update_compagnie(
     id: i64,
     update_data: CompagnieCatalogueUpdate,
 ) -> AppResult<CompagnieCatalogue> {
-    let mut sets = Vec::new();
+    let mut fields = Vec::new();
     let mut params: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
 
     if let Some(code_iata) = update_data.code_iata {
-        sets.push("code_iata = ?");
+        fields.push("code_iata");
         params.push(Box::new(code_iata));
     }
     if let Some(nom_compagnie) = update_data.nom_compagnie {
-        sets.push("nom_compagnie = ?");
+        fields.push("nom_compagnie");
         params.push(Box::new(nom_compagnie));
     }
     if let Some(pays) = update_data.pays {
-        sets.push("pays = ?");
+        fields.push("pays");
         params.push(Box::new(pays));
     }
     if let Some(site_web) = update_data.site_web {
-        sets.push("site_web = ?");
+        fields.push("site_web");
         params.push(Box::new(site_web));
     }
     if let Some(actif) = update_data.actif {
-        sets.push("actif = ?");
+        fields.push("actif");
         params.push(Box::new(actif));
     }
 
-    if sets.is_empty() {
+    if fields.is_empty() {
         return Err(AppError::Validation("Aucune donnée à mettre à jour".to_string()));
     }
 
-    sets.push("updated_at = CURRENT_TIMESTAMP");
-    let query = format!(
-        "UPDATE catalogue_compagnies SET {} WHERE id = ?",
-        sets.join(", ")
-    );
+    let query = crate::utils::query_builder::build_update_query("catalogue_compagnies", &fields, "id");
 
     let mut stmt = conn.prepare(&query)?;
     let mut final_params: Vec<&dyn rusqlite::ToSql> = params.iter().map(|p| p.as_ref()).collect();

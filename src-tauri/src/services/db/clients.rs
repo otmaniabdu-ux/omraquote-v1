@@ -79,51 +79,47 @@ pub fn list(conn: &Connection) -> AppResult<Vec<Client>> {
 }
 
 pub fn update(conn: &Connection, id: i64, update_data: ClientUpdate) -> AppResult<Client> {
-    let mut sets = Vec::new();
+    let mut fields = Vec::new();
     let mut params: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
 
     if let Some(raison_sociale) = update_data.raison_sociale {
-        sets.push("raison_sociale = ?");
+        fields.push("raison_sociale");
         params.push(Box::new(raison_sociale));
     }
     if let Some(nom_contact) = update_data.nom_contact {
-        sets.push("nom_contact = ?");
+        fields.push("nom_contact");
         params.push(Box::new(nom_contact));
     }
     if let Some(telephone) = update_data.telephone {
-        sets.push("telephone = ?");
+        fields.push("telephone");
         params.push(Box::new(telephone));
     }
     if let Some(email) = update_data.email {
-        sets.push("email = ?");
+        fields.push("email");
         params.push(Box::new(email));
     }
     if let Some(adresse) = update_data.adresse {
-        sets.push("adresse = ?");
+        fields.push("adresse");
         params.push(Box::new(adresse));
     }
     if let Some(pays) = update_data.pays {
-        sets.push("pays = ?");
+        fields.push("pays");
         params.push(Box::new(pays));
     }
     if let Some(type_client) = update_data.type_client {
-        sets.push("type_client = ?");
+        fields.push("type_client");
         params.push(Box::new(type_client));
     }
     if let Some(remarques) = update_data.remarques {
-        sets.push("remarques = ?");
+        fields.push("remarques");
         params.push(Box::new(remarques));
     }
 
-    if sets.is_empty() {
+    if fields.is_empty() {
         return Err(crate::error::AppError::Validation("Aucune donnée à mettre à jour".to_string()));
     }
 
-    sets.push("updated_at = CURRENT_TIMESTAMP");
-    let query = format!(
-        "UPDATE clients SET {} WHERE id = ?",
-        sets.join(", ")
-    );
+    let query = crate::utils::query_builder::build_update_query("clients", &fields, "id");
 
     let mut stmt = conn.prepare(&query)?;
     let mut final_params: Vec<&dyn rusqlite::ToSql> = params.iter().map(|p| p.as_ref()).collect();

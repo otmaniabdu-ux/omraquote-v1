@@ -1,9 +1,9 @@
-import { computed, type Ref } from 'vue';
+import { ref, watch, type Ref } from 'vue';
+import { invoke } from '@tauri-apps/api/core';
 
 /**
- * Convertit un montant d'une devise vers DZD pour affichage indicatif uniquement.
- * Retourne toujours une chaine decimale — jamais de number.
- * Le montant CANONIQUE est calcule cote Backend au moment de la sauvegarde.
+ * Convertit un montant d'une devise vers DZD pour affichage indicatif en appelant le backend Rust.
+ * Retourne une ref réactive contenant la chaîne décimale calculée par le backend.
  */
 export function useConversionDevises(
   montant: Ref<string>,
@@ -12,20 +12,31 @@ export function useConversionDevises(
   tauxUsdDzd: Ref<string>,
   tauxEurDzd: Ref<string>
 ) {
-  const montantDzd = computed(() => {
-    // On parse le montant et les taux SEULEMENT pour un affichage indicatif.
-    // Les valeurs canoniques (montant_dzd) sont calculees cote Rust.
-    const val = Number(montant.value) || 0;
-    let taux = 1;
-    switch (deviseSource.value) {
-      case 'SAR': taux = Number(tauxSarDzd.value) || 1; break;
-      case 'USD': taux = Number(tauxUsdDzd.value) || 1; break;
-      case 'EUR': taux = Number(tauxEurDzd.value) || 1; break;
-      case 'DZD': taux = 1; break;
-      default:    taux = 1;
+  const montantDzd = ref('0.00');
+
+  const updateConversion = async () => {
+    try {
+      const res = await invoke<string>('calculer_conversion_backend', {
+        montant: montant.value || '0',
+        deviseSource: deviseSource.value,
+        tauxSarDzd: tauxSarDzd.value || '1.0',
+        tauxUsdDzd: tauxUsdDzd.value || '1.0',
+        tauxEurDzd: tauxEurDzd.value || '1.0',
+      });
+      montantDzd.value = Number(res).toFixed(2);
+    } catch (e) {
+      console.error('Erreur de conversion backend:', e);
+      montantDzd.value = '0.00';
     }
-    return (val * taux).toFixed(2);
-  });
+  };
+
+  watch(
+    [montant, deviseSource, tauxSarDzd, tauxUsdDzd, tauxEurDzd],
+    () => {
+      updateConversion();
+    },
+    { immediate: true }
+  );
 
   return { montantDzd };
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { Devis } from '@/types/devis.types';
+import { invoke } from '@tauri-apps/api/core';
 
 const props = defineProps<{
   devis: Devis | null;
@@ -22,12 +23,23 @@ const remise = ref<string>(props.devis?.remise || '0');
 const notesInternes = ref<string | undefined>(props.devis?.notes_internes);
 
 // Calcul indicatif (affichage uniquement — valeur canonique cote Rust)
-function calculIndicatif(): string {
-  // Pour affichage indicatif uniquement: conversion numerique acceptable ici.
-  // La vraie marge est calculee cote Backend au moment de la sauvegarde.
-  const taux = Number(tauxSarDzd.value) || 1;
-  return `Indicatif: taux SAR->DZD x${taux}, Marge ${margeType.value === 'pourcentage' ? margeValeur.value + '%' : '+' + margeValeur.value + ' DZD'}`;
-}
+const margeIndicative = ref('0.00');
+
+const updateMargeIndicative = async () => {
+  try {
+    const res = await invoke<string>('calculer_marge_indicative_backend', {
+      coutNet: '100000',
+      margeType: margeType.value,
+      margeValeur: margeValeur.value || '0',
+    });
+    margeIndicative.value = Number(res).toFixed(2);
+  } catch (e) {
+    console.error('Erreur marge backend:', e);
+    margeIndicative.value = '0.00';
+  }
+};
+
+watch([margeType, margeValeur], updateMargeIndicative, { immediate: true });
 
 function emitUpdate() {
   emit('update', {
@@ -92,7 +104,7 @@ watch([tauxSarDzd, tauxUsdDzd, tauxEurDzd, margeType, margeValeur, remise, notes
 
       <!-- Indicatif -->
       <div class="indicatif">
-        {{ calculIndicatif() }}
+        Indicatif (pour 100 000 DZD de coût net) : + {{ margeIndicative }} DZD
       </div>
     </div>
 

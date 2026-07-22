@@ -239,67 +239,63 @@ pub fn update(conn: &Connection, id: i64, update_data: DevisUpdate) -> AppResult
         valider_dates_sejour(depart, retour)?;
     }
 
-    let mut sets = Vec::new();
+    let mut fields = Vec::new();
     let mut params_vec: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
 
     if let Some(date_retour) = update_data.date_retour {
-        sets.push("date_retour = ?");
+        fields.push("date_retour");
         params_vec.push(Box::new(date_retour));
     }
     if let Some(type_visa) = update_data.type_visa {
-        sets.push("type_visa = ?");
+        fields.push("type_visa");
         params_vec.push(Box::new(type_visa));
     }
     if let Some(assurance_medicale) = update_data.assurance_medicale {
-        sets.push("assurance_medicale = ?");
+        fields.push("assurance_medicale");
         params_vec.push(Box::new(assurance_medicale));
     }
     if let Some(devise_achat) = update_data.devise_achat {
-        sets.push("devise_achat = ?");
+        fields.push("devise_achat");
         params_vec.push(Box::new(devise_achat));
     }
     if let Some(taux_sar_dzd) = update_data.taux_sar_dzd {
-        sets.push("taux_sar_dzd = ?");
+        fields.push("taux_sar_dzd");
         params_vec.push(Box::new(taux_sar_dzd.to_string()));
     }
     if let Some(taux_usd_dzd) = update_data.taux_usd_dzd {
-        sets.push("taux_usd_dzd = ?");
+        fields.push("taux_usd_dzd");
         params_vec.push(Box::new(taux_usd_dzd.to_string()));
     }
     if let Some(taux_eur_dzd) = update_data.taux_eur_dzd {
-        sets.push("taux_eur_dzd = ?");
+        fields.push("taux_eur_dzd");
         params_vec.push(Box::new(taux_eur_dzd.to_string()));
     }
     if let Some(marge_type) = update_data.marge_type {
-        sets.push("marge_type = ?");
+        fields.push("marge_type");
         params_vec.push(Box::new(marge_type));
     }
     if let Some(marge_valeur) = update_data.marge_valeur {
-        sets.push("marge_valeur = ?");
+        fields.push("marge_valeur");
         params_vec.push(Box::new(marge_valeur.to_string()));
     }
     if let Some(statut) = update_data.statut {
-        sets.push("statut = ?");
+        fields.push("statut");
         params_vec.push(Box::new(statut));
     }
     if let Some(remise) = update_data.remise {
-        sets.push("remise = ?");
+        fields.push("remise");
         params_vec.push(Box::new(remise.to_string()));
     }
     if let Some(notes_internes) = update_data.notes_internes {
-        sets.push("notes_internes = ?");
+        fields.push("notes_internes");
         params_vec.push(Box::new(notes_internes));
     }
 
-    if sets.is_empty() {
+    if fields.is_empty() {
         return Err(AppError::Validation("Aucune donnée à mettre à jour".to_string()));
     }
 
-    sets.push("updated_at = CURRENT_TIMESTAMP");
-    let query = format!(
-        "UPDATE devis SET {} WHERE id = ?",
-        sets.join(", ")
-    );
+    let query = crate::utils::query_builder::build_update_query("devis", &fields, "id");
 
     let mut stmt = conn.prepare(&query)?;
     let current = get_by_id(conn, id)?;
