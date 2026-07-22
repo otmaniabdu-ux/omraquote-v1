@@ -28,6 +28,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "targets": ["msi", "appimage"]
+    "targets": ["nsis", "msi", "appimage"]
   }
 }

@@ -2842,6 +2842,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tauri",
+ "tauri-build",
  "thiserror 1.0.69",
  "tokio",
  "typst",

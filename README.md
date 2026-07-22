@@ -147,5 +147,20 @@ Copyright © El Mouhssinouen Tours — Tous droits réservés.
 - **Résolution des pertes de données** : Intégration complète des données financières, des trains Haramain, des prestations VIP personnalisées et rétablissement de la réactivité sur les formulaires d'hébergement et de vol.
 - **Correction Compilation** : Résolution du problème de compilation Rust en activant les fonctionnalités `chrono` et `rust_decimal` pour `rusqlite`.
 - **Refactoring Architectural (Phase 3)** : Centralisation complète de toutes les requêtes SQLite brutes dans une couche de services DB dédiée (`src-tauri/src/services/db/`), harmonisation de la propagation des erreurs via `AppError`/`AppResult` et nettoyage des contrôleurs IPC Tauri.
+- **Calculs Financiers Backend (T4)** : Les conversions de devises et calculs de marge sont désormais effectués exclusivement côté Rust (`commands/calculs.rs`) via `rust_decimal::Decimal`, éliminant tout calcul en flottant côté frontend.
+- **Générateur de Requêtes SQL (P1)** : Utilitaire centralisé `utils/query_builder.rs` pour construire dynamiquement les requêtes d'UPDATE SQL sécurisées, intégré dans tous les services DB.
+- **Complétude i18n Arabe (P2)** : Toutes les clés de traduction manquantes en arabe ont été ajoutées pour une parité complète avec le français.
 
+### Fichiers Exécutables
 
+Le build de production génère les installateurs suivants :
+
+| Format | Fichier | Emplacement |
+|---|---|---|
+| **NSIS (.exe)** | `OmraVIP Quotes_0.1.0_x64-setup.exe` | `src-tauri/target/release/bundle/nsis/` |
+| **MSI (.msi)** | `OmraVIP Quotes_0.1.0_x64_en-US.msi` | `src-tauri/target/release/bundle/msi/` |
+
+```bash
+# Générer les installateurs
+npm run tauri build
+```

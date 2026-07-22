@@ -30,3 +30,6 @@ pdf-generation = ["typst", "typst-pdf", "comemo", "ecow"]
 
 [dev-dependencies]
 rust_decimal_macros = "1.34"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }

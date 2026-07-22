@@ -136,5 +136,13 @@ All Critical, Important, and Minor issues from the initial code review have been
 - **Global Error Handling**: Standardized error propagation using `AppError` and `AppResult` across all commands and database service files.
 - **IPC controller cleanup**: Command files (`clients.rs`, `compagnies.rs`, `devis.rs`, `hebergements.rs`, `hotels.rs`, `passagers.rs`, `prestations.rs`, `transferts.rs`, `vols.rs`, `validation.rs`, `pdf.rs`, `marge.rs`) have been cleaned and now only delegate database tasks to `services/db/`.
 - **Fixed decimals & types handling**: Handled decimal serialization as text strings inside database tables cleanly, using `Decimal::from_str` and correct rusqlite parameter passing (`params!`).
+- **T4 · Backend Financial Calculations**: Created `commands/calculs.rs` with `calculer_conversion_backend` (currency conversion SAR/USD/EUR→DZD using `rust_decimal::Decimal`) and `calculer_marge_indicative_backend` (margin calculation). Refactored `useConversionDevises.ts` and `FormulaireFinancier.vue` to invoke these Rust commands instead of performing JS float arithmetic.
 
+### Phase 4 Polishing (July 2026)
+- **P1 · Dynamic SQL Update Query Builder**: Created `utils/query_builder.rs` utility for generating parameterized `UPDATE` queries safely. Integrated across all DB services (`clients.rs`, `compagnies.rs`, `devis.rs`, `hotels.rs`, `prestations.rs`, `transferts.rs`), eliminating manual SQL string concatenation.
+- **P2 · i18n Arabic Completeness**: Added missing Arabic translations in `ar.json` (`please_fill_name`, `please_fill_birthdate`, `notes_internes`, `duplicate`, `average_margin`) to achieve full parity with `fr.json`.
 
+### Build Targets
+- **Windows**: NSIS installer (`.exe`) + WiX MSI installer (`.msi`)
+- **Linux**: AppImage (`.AppImage`)
+- Build command: `npm run tauri build`
